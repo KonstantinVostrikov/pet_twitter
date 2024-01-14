@@ -9,6 +9,8 @@ class Post {
     LocalDateTime createdAt
     LocalDateTime modifiedAt
     List<String> hashtags
+    Map<String,Boolean> likes
+    List<Comment> comments
 
 
     @Override
