@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=devroot
+      - MONGO_INITDB_ROOT_PASSWORD=devroot
+      - MONGO_INITDB_DATABASE=twit
+    ports:
+      - "27017:27017"
+    volumes:
+      - my_twit_mongo:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=devroot
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=devroot
+      - ME_CONFIG_BASICAUTH_USERNAME=devroot
+      - ME_CONFIG_BASICAUTH_PASSWORD=devroot
+    depends_on:
+      - mongo
+    ports:
+      - "8888:8081"
+
+volumes:
+  my_twit_mongo:
