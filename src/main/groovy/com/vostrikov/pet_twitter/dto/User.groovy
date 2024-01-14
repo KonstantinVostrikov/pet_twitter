@@ -7,6 +7,7 @@ class User {
     String secondName
     String email
     String phoneNumber
+    Set<String> subscriptions
 
 
     @Override

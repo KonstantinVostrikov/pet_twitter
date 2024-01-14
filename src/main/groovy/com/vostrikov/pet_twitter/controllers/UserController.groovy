@@ -1,6 +1,7 @@
 package com.vostrikov.pet_twitter.controllers
 
 import com.vostrikov.pet_twitter.dto.ResponseResult
+import com.vostrikov.pet_twitter.dto.Subscription
 import com.vostrikov.pet_twitter.dto.User
 import com.vostrikov.pet_twitter.exceptions.user.UserWithEmailAlreadyExistException
 import com.vostrikov.pet_twitter.exceptions.user.UserWithNicknameAlreadyExistException
@@ -51,6 +52,28 @@ class UserController {
         try {
             userService.deleteById(id)
             return ResponseEntity.ok().body(new ResponseResult("User with id $id deleted successfully"))
+        } catch (Exception exception) {
+            log.error(exception.message)
+            return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
+        }
+    }
+
+    @PostMapping("/subscribe")
+    def subscribe(@RequestBody Subscription subscription) {
+        try {
+            userService.subscribe(subscription)
+            return ResponseEntity.ok().body(new ResponseResult("Successufully susscribed to ${subscription.to}"))
+        } catch (Exception exception) {
+            log.error(exception.message)
+            return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
+        }
+    }
+
+    @PostMapping("/unsubscribe")
+    def unsubscribe(@RequestBody Subscription subscription) {
+        try {
+            userService.unsubscribe(subscription)
+            return ResponseEntity.ok().body(new ResponseResult("Successufully unsusscribed from ${subscription.to}"))
         } catch (Exception exception) {
             log.error(exception.message)
             return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))

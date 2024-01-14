@@ -1,6 +1,8 @@
 package com.vostrikov.pet_twitter.services.impl
 
+import com.vostrikov.pet_twitter.dto.Subscription
 import com.vostrikov.pet_twitter.dto.User
+import com.vostrikov.pet_twitter.exceptions.subscription.SubscriptionException
 import com.vostrikov.pet_twitter.exceptions.user.UserAlreadyExistException
 import com.vostrikov.pet_twitter.exceptions.user.UserEmailCanNotBeChangedException
 import com.vostrikov.pet_twitter.exceptions.user.UserNotExistException
@@ -35,6 +37,7 @@ class UserServiceImpl implements UserService {
         userRepository.findByNickName(user.nickName).ifPresent { throw new UserWithNicknameAlreadyExistException() }
 
         user.setId(UUID.randomUUID().toString())
+        user.subscriptions = new HashSet<>()
         User createdUser = userRepository.save(user)
         return createdUser
     }
@@ -81,5 +84,41 @@ class UserServiceImpl implements UserService {
         } else {
             throw new UserWithNicknameAlreadyExistException()
         }
+    }
+
+    @Override
+    Boolean subscribe(Subscription subscription) {
+        def from = subscription.from
+        def to = subscription.to
+
+        // check dto correctness
+        if (from == null || from.empty) throw new SubscriptionException()
+        if (to == null || to.empty) throw new SubscriptionException()
+
+        // check users exist
+        userRepository.findById(to).orElseThrow { new SubscriptionException() }
+        def userFrom = userRepository.findById(from).orElseThrow { new SubscriptionException() }
+
+        userFrom.subscriptions.add(to)
+        userRepository.save(userFrom)
+        return true
+    }
+
+    @Override
+    Boolean unsubscribe(Subscription subscription) {
+        def from = subscription.from
+        def to = subscription.to
+
+        // check dto correctness
+        if (from == null || from.empty) throw new SubscriptionException()
+        if (to == null || to.empty) throw new SubscriptionException()
+
+        // check users exist
+        userRepository.findById(to).orElseThrow { new SubscriptionException() }
+        def userFrom = userRepository.findById(from).orElseThrow { new SubscriptionException() }
+
+        userFrom.subscriptions.remove(to)
+        userRepository.save(userFrom)
+        return true
     }
 }

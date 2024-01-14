@@ -1,5 +1,6 @@
 package com.vostrikov.pet_twitter.services
 
+import com.vostrikov.pet_twitter.dto.Subscription
 import com.vostrikov.pet_twitter.dto.User
 
 interface UserService {
@@ -10,4 +11,8 @@ interface UserService {
     void deleteById(String id)
 
     User edit(User user)
+
+    Boolean subscribe(Subscription subscription)
+
+    Boolean unsubscribe(Subscription subscription)
 }
