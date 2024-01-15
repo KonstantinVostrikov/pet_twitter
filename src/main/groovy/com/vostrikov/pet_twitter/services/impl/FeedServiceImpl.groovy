@@ -21,6 +21,7 @@ class FeedServiceImpl implements FeedService {
     }
 
 
+    // TODO: make pagination
     @Override
     List<Post> receive(Feed feed) {
 
@@ -49,6 +50,7 @@ class FeedServiceImpl implements FeedService {
 
     @Override
     List<Post> own(String userId) {
+        // TODO: make pagination
         postService.findOwnPosts(userId)
     }
 }
