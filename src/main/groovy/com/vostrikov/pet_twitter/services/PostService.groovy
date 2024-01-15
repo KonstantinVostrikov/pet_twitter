@@ -9,6 +9,12 @@ interface PostService {
 
     Post findPost(String postId)
 
+    List<Post> findSubscriptionsPosts(Iterable<String> iterable)
+
+    List<Post> findParticularUserPosts(String userId)
+
+    List<Post> findOwnPosts(String userId)
+
     Post editPost(Post post)
 
     void deletePost(String postId)

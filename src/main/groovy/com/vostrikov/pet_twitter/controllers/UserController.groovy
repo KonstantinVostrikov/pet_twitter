@@ -65,6 +65,7 @@ class UserController {
             return ResponseEntity.ok().body(new ResponseResult("Successufully susscribed to ${subscription.to}"))
         } catch (Exception exception) {
             log.error(exception.message)
+            exception.printStackTrace()
             return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
         }
     }

@@ -38,6 +38,6 @@ class CommentServiceImpl implements CommentService {
     List<Comment> fetchComments(String postId){
         if (postId == null || postId.isEmpty()) throw new RuntimeException("Comment postId field can't be empty")
         // TODO: make pagination
-        return commentRepository.findByPostId(postId)
+        return commentRepository.findByPostIdOrderByCreatedAtAsc(postId)
     }
 }

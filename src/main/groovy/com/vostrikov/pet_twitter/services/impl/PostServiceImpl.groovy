@@ -61,6 +61,25 @@ class PostServiceImpl implements PostService {
     }
 
     @Override
+    List<Post> findSubscriptionsPosts(Iterable<String> iterable) {
+        postRepository.findByUserIdInOrderByCreatedAtDesc(iterable).each { it ->
+            it.comments = commentService.fetchComments(it.id)
+        }
+    }
+
+    @Override
+    List<Post> findParticularUserPosts(String userId) {
+        postRepository.findAllByUserId(userId).each { it ->
+            it.comments = commentService.fetchComments(it.id)
+        }
+    }
+
+    @Override
+    List<Post> findOwnPosts(String userId) {
+        enrichWithComments(postRepository.findAllByUserId(userId))
+    }
+
+    @Override
     Post editPost(Post post) {
         // check post exist
         def optionalOldPost = postRepository.findById(post.id)
@@ -110,6 +129,12 @@ class PostServiceImpl implements PostService {
         }
 
         return postRepository.save(post)
+    }
+
+    private List<Post> enrichWithComments(List<Post> posts) {
+        posts.each { it ->
+            it.comments = commentService.fetchComments(it.id)
+        }
     }
 
 }

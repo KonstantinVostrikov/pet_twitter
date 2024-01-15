@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CommentRepository extends MongoRepository<Comment, String> {
-    List<Comment> findByPostId(String postId)
+    List<Comment> findByPostIdOrderByCreatedAtAsc(String postId)
 
 }
