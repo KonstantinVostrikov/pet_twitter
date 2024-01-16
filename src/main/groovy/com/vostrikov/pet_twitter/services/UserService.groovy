@@ -2,7 +2,7 @@ package com.vostrikov.pet_twitter.services
 
 import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Subscription
-import com.vostrikov.pet_twitter.dto.User
+import com.vostrikov.pet_twitter.entity.User
 
 interface UserService {
     User createUser(User user)
@@ -18,4 +18,6 @@ interface UserService {
     Boolean unsubscribe(Subscription subscription)
 
     void favoritePost(FavoritePost favoritePost)
+
+    User findByEmail(String email)
 }

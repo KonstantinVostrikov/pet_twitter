@@ -1,7 +1,7 @@
 package com.vostrikov.pet_twitter.services.impl
 
 import com.vostrikov.pet_twitter.dto.Feed
-import com.vostrikov.pet_twitter.dto.Post
+import com.vostrikov.pet_twitter.entity.Post
 import com.vostrikov.pet_twitter.services.FeedService
 import com.vostrikov.pet_twitter.services.PostService
 import com.vostrikov.pet_twitter.services.UserService

@@ -1,4 +1,6 @@
-package com.vostrikov.pet_twitter.dto
+package com.vostrikov.pet_twitter.entity
+
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 class User {
     String id
@@ -6,6 +8,9 @@ class User {
     String firstName
     String secondName
     String email
+    @JsonIgnore
+    String password
+    String role
     String phoneNumber
     Set<String> subscriptions
     Set<String> favoritePosts

@@ -1,6 +1,6 @@
 package com.vostrikov.pet_twitter.services.impl
 
-import com.vostrikov.pet_twitter.dto.Comment
+import com.vostrikov.pet_twitter.entity.Comment
 import com.vostrikov.pet_twitter.exceptions.comment.CommentAlreadyExistException
 import com.vostrikov.pet_twitter.repository.CommentRepository
 import com.vostrikov.pet_twitter.services.CommentService

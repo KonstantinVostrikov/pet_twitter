@@ -1,6 +1,6 @@
 package com.vostrikov.pet_twitter.repository
 
-import com.vostrikov.pet_twitter.dto.User
+import com.vostrikov.pet_twitter.entity.User
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 

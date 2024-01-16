@@ -1,7 +1,7 @@
 package com.vostrikov.pet_twitter.services.impl
 
 import com.vostrikov.pet_twitter.dto.Like
-import com.vostrikov.pet_twitter.dto.Post
+import com.vostrikov.pet_twitter.entity.Post
 import com.vostrikov.pet_twitter.exceptions.post.MissingPostIdException
 import com.vostrikov.pet_twitter.exceptions.post.PostAlreadyExistException
 import com.vostrikov.pet_twitter.exceptions.post.PostNotExistException

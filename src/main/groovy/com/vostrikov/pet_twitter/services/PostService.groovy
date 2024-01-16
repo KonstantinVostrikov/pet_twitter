@@ -1,7 +1,7 @@
 package com.vostrikov.pet_twitter.services
 
 import com.vostrikov.pet_twitter.dto.Like
-import com.vostrikov.pet_twitter.dto.Post
+import com.vostrikov.pet_twitter.entity.Post
 
 interface PostService {
 

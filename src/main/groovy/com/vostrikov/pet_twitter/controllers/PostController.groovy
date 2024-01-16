@@ -2,7 +2,7 @@ package com.vostrikov.pet_twitter.controllers
 
 import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Like
-import com.vostrikov.pet_twitter.dto.Post
+import com.vostrikov.pet_twitter.entity.Post
 import com.vostrikov.pet_twitter.dto.ResponseResult
 import com.vostrikov.pet_twitter.services.FeedService
 import com.vostrikov.pet_twitter.services.PostService

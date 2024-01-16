@@ -1,4 +1,4 @@
-package com.vostrikov.pet_twitter.dto
+package com.vostrikov.pet_twitter.entity
 
 import java.time.LocalDateTime
 

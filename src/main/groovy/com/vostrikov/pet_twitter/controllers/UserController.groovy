@@ -2,7 +2,7 @@ package com.vostrikov.pet_twitter.controllers
 
 import com.vostrikov.pet_twitter.dto.ResponseResult
 import com.vostrikov.pet_twitter.dto.Subscription
-import com.vostrikov.pet_twitter.dto.User
+import com.vostrikov.pet_twitter.entity.User
 import com.vostrikov.pet_twitter.exceptions.user.UserWithEmailAlreadyExistException
 import com.vostrikov.pet_twitter.exceptions.user.UserWithNicknameAlreadyExistException
 import com.vostrikov.pet_twitter.services.UserService

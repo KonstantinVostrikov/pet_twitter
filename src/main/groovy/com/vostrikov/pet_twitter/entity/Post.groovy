@@ -1,6 +1,5 @@
-package com.vostrikov.pet_twitter.dto
+package com.vostrikov.pet_twitter.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 import java.time.LocalDateTime
 

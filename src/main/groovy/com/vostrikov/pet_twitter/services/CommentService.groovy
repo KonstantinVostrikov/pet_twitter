@@ -1,6 +1,6 @@
 package com.vostrikov.pet_twitter.services
 
-import com.vostrikov.pet_twitter.dto.Comment
+import com.vostrikov.pet_twitter.entity.Comment
 
 interface CommentService {
 

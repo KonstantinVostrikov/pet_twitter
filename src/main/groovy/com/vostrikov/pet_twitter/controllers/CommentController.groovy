@@ -1,6 +1,6 @@
 package com.vostrikov.pet_twitter.controllers
 
-import com.vostrikov.pet_twitter.dto.Comment
+import com.vostrikov.pet_twitter.entity.Comment
 import com.vostrikov.pet_twitter.dto.ResponseResult
 import com.vostrikov.pet_twitter.services.CommentService
 import groovy.util.logging.Slf4j

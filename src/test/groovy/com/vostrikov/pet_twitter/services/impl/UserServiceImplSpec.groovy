@@ -2,7 +2,7 @@ package com.vostrikov.pet_twitter.services.impl
 
 import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Subscription
-import com.vostrikov.pet_twitter.dto.User
+import com.vostrikov.pet_twitter.entity.User
 import com.vostrikov.pet_twitter.exceptions.subscription.SubscriptionException
 import com.vostrikov.pet_twitter.exceptions.user.UserAlreadyExistException
 import com.vostrikov.pet_twitter.exceptions.user.UserEmailCanNotBeChangedException
