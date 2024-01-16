@@ -61,17 +61,18 @@ class PostServiceImpl implements PostService {
     }
 
     @Override
-    List<Post> findSubscriptionsPosts(Iterable<String> iterable) {
-        postRepository.findByUserIdInOrderByCreatedAtDesc(iterable).each { it ->
-            it.comments = commentService.fetchComments(it.id)
-        }
+    List<Post> findPostsByIds(Iterable<String> postIds) {
+        return enrichWithComments(postRepository.findAllById(postIds))
+    }
+
+    @Override
+    List<Post> findPostsByUserIds(Iterable<String> userIds) {
+        enrichWithComments(postRepository.findByUserIdInOrderByCreatedAtDesc(userIds))
     }
 
     @Override
     List<Post> findParticularUserPosts(String userId) {
-        postRepository.findAllByUserId(userId).each { it ->
-            it.comments = commentService.fetchComments(it.id)
-        }
+        enrichWithComments(postRepository.findAllByUserId(userId))
     }
 
     @Override

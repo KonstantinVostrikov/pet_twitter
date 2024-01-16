@@ -37,7 +37,7 @@ class FeedServiceImpl implements FeedService {
             def user = userService.findById(feed.from)
             HashSet set = new HashSet(user.subscriptions)
             set.add(user.id)
-            return postService.findSubscriptionsPosts(set)
+            return postService.findPostsByUserIds(set)
         } else {
 
             // Check users exist
@@ -52,5 +52,11 @@ class FeedServiceImpl implements FeedService {
     List<Post> own(String userId) {
         // TODO: make pagination
         postService.findOwnPosts(userId)
+    }
+
+    @Override
+    List<Post> favoritesPosts(String userId) {
+        def user = userService.findById(userId)
+        postService.findPostsByIds(user.favoritePosts)
     }
 }

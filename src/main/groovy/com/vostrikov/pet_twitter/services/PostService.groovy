@@ -9,7 +9,9 @@ interface PostService {
 
     Post findPost(String postId)
 
-    List<Post> findSubscriptionsPosts(Iterable<String> iterable)
+    List<Post> findPostsByIds(Iterable<String> postIds)
+
+    List<Post> findPostsByUserIds(Iterable<String> userIds)
 
     List<Post> findParticularUserPosts(String userId)
 

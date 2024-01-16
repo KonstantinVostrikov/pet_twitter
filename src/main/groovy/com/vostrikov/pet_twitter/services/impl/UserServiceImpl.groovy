@@ -1,5 +1,6 @@
 package com.vostrikov.pet_twitter.services.impl
 
+import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Subscription
 import com.vostrikov.pet_twitter.dto.User
 import com.vostrikov.pet_twitter.exceptions.subscription.SubscriptionException
@@ -38,6 +39,7 @@ class UserServiceImpl implements UserService {
 
         user.setId(UUID.randomUUID().toString())
         user.subscriptions = new HashSet<>()
+        user.favoritePosts = new HashSet<>()
         User createdUser = userRepository.save(user)
         return createdUser
     }
@@ -120,5 +122,19 @@ class UserServiceImpl implements UserService {
         userFrom.subscriptions.remove(to)
         userRepository.save(userFrom)
         return true
+    }
+
+    @Override
+    void favoritePost(FavoritePost favoritePost) {
+        def user = userRepository.findById(favoritePost.userId).orElseThrow { throw new RuntimeException("User doesn't exist") }
+        def contain = user.favoritePosts.contains(favoritePost.postId)
+
+        if (contain){
+            user.favoritePosts.remove(favoritePost.postId)
+            userRepository.save(user)
+        } else {
+            user.favoritePosts.add(favoritePost.postId)
+            userRepository.save(user)
+        }
     }
 }

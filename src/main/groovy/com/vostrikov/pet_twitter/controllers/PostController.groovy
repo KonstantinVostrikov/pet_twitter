@@ -1,9 +1,12 @@
 package com.vostrikov.pet_twitter.controllers
 
+import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Like
 import com.vostrikov.pet_twitter.dto.Post
 import com.vostrikov.pet_twitter.dto.ResponseResult
+import com.vostrikov.pet_twitter.services.FeedService
 import com.vostrikov.pet_twitter.services.PostService
+import com.vostrikov.pet_twitter.services.UserService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @Slf4j
@@ -22,6 +26,10 @@ class PostController {
 
     @Autowired
     PostService postService
+    @Autowired
+    UserService userService
+    @Autowired
+    FeedService feedService
 
     @PostMapping("/create")
     def createPost(@RequestBody Post post) {
@@ -75,6 +83,31 @@ class PostController {
         } catch (Exception ex) {
             log.error(ex.message)
             return ResponseEntity.internalServerError().body(new ResponseResult(ex.message))
+        }
+    }
+
+
+    @GetMapping("/favorites")
+    def favoritePosts(@RequestParam("userId") String userId) {
+        try {
+            def posts = feedService.favoritesPosts(userId)
+            return ResponseEntity.ok().body(new ResponseResult("Get user favorite posts", posts))
+        } catch (Exception exception) {
+            log.error(exception.message)
+            exception.printStackTrace()
+            return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
+        }
+    }
+
+    @PostMapping("/favorite/handle")
+    def favoritePost(@RequestBody FavoritePost favoritePost) {
+        try {
+            userService.favoritePost(favoritePost)
+            return ResponseEntity.ok().body(new ResponseResult("Favorite post successufully processed userId=${favoritePost.userId}, postId=${favoritePost.postId} "))
+        } catch (Exception exception) {
+            log.error(exception.message)
+            exception.printStackTrace()
+            return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
         }
     }
 

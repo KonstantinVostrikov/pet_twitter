@@ -8,7 +8,7 @@ class User {
     String email
     String phoneNumber
     Set<String> subscriptions
-
+    Set<String> favoritePosts
 
     @Override
     String toString() {
