@@ -93,14 +93,14 @@ class FeedServiceImplSpec extends Specification {
                 new Post(id: "post1", content: "Content 1", userId: userId, createdAt: LocalDateTime.now()),
                 new Post(id: "post2", content: "Content 2", userId: userId, createdAt: LocalDateTime.now())
         ]
-        postService.findOwnPosts(userId) >> posts
+        postService.findParticularUserPosts(userId) >> posts
         userService.findById(userId) >> new User(id: userId)
 
         when:
         def result = feedService.own(userId)
 
         then:
-        1 * postService.findOwnPosts(userId) >> posts
+        1 * postService.findParticularUserPosts(userId) >> posts
         result == posts
     }
 

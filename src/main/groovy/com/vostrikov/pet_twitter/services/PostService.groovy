@@ -15,12 +15,10 @@ interface PostService {
 
     List<Post> findParticularUserPosts(String userId)
 
-    List<Post> findOwnPosts(String userId)
-
     Post editPost(Post post)
 
     void deletePost(String postId)
 
-    Post addOrDeleteLike(Like like)
+    void addOrDeleteLike(Like like)
 
 }

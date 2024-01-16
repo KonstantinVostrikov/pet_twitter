@@ -76,11 +76,6 @@ class PostServiceImpl implements PostService {
     }
 
     @Override
-    List<Post> findOwnPosts(String userId) {
-        enrichWithComments(postRepository.findAllByUserId(userId))
-    }
-
-    @Override
     Post editPost(Post post) {
         // check post exist
         def optionalOldPost = postRepository.findById(post.id)
@@ -102,8 +97,11 @@ class PostServiceImpl implements PostService {
         def now = LocalDateTime.now()
         post.setCreatedAt(old.createdAt)
         post.setModifiedAt(now)
+
+        // do not write comments in post entity
+        post.comments = null
         def edited = postRepository.save(post)
-        return edited
+        return enrichWithComments([edited]).first()
     }
 
     @Override
@@ -113,10 +111,10 @@ class PostServiceImpl implements PostService {
     }
 
     @Override
-    Post addOrDeleteLike(Like like) {
+    void addOrDeleteLike(Like like) {
         def optionalPost = postRepository.findById(like.postId)
         if (optionalPost.empty) {
-            throw RuntimeException("Can not find a post")
+            throw new RuntimeException("Can not find a post")
         }
 
         def post = optionalPost.get()
@@ -129,7 +127,7 @@ class PostServiceImpl implements PostService {
             likeMap.put(like.userId, true)
         }
 
-        return postRepository.save(post)
+        postRepository.save(post)
     }
 
     private List<Post> enrichWithComments(List<Post> posts) {

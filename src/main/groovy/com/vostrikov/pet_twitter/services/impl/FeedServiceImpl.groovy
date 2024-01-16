@@ -52,7 +52,7 @@ class FeedServiceImpl implements FeedService {
     List<Post> own(String userId) {
         // TODO: make pagination
         def user = userService.findById(userId)
-        postService.findOwnPosts(user.id)
+        postService.findParticularUserPosts(user.id)
     }
 
     @Override

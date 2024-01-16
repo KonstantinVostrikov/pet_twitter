@@ -1,5 +1,7 @@
 package com.vostrikov.pet_twitter.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
 import java.time.LocalDateTime
 
 class Post {
@@ -9,7 +11,7 @@ class Post {
     LocalDateTime createdAt
     LocalDateTime modifiedAt
     List<String> hashtags
-    Map<String,Boolean> likes
+    Map<String, Boolean> likes
     List<Comment> comments
 
 
