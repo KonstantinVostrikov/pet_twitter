@@ -51,12 +51,17 @@ class FeedServiceImpl implements FeedService {
     @Override
     List<Post> own(String userId) {
         // TODO: make pagination
-        postService.findOwnPosts(userId)
+        def user = userService.findById(userId)
+        postService.findOwnPosts(user.id)
     }
 
     @Override
     List<Post> favoritesPosts(String userId) {
         def user = userService.findById(userId)
-        postService.findPostsByIds(user.favoritePosts)
+        if (!user.favoritePosts.empty) {
+            return postService.findPostsByIds(user.favoritePosts)
+        } else {
+            return []
+        }
     }
 }
