@@ -4,14 +4,11 @@ import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Subscription
 import com.vostrikov.pet_twitter.entity.User
 import com.vostrikov.pet_twitter.exceptions.subscription.SubscriptionException
-import com.vostrikov.pet_twitter.exceptions.user.UserAlreadyExistException
-import com.vostrikov.pet_twitter.exceptions.user.UserEmailCanNotBeChangedException
-import com.vostrikov.pet_twitter.exceptions.user.UserNotExistException
-import com.vostrikov.pet_twitter.exceptions.user.UserWithEmailAlreadyExistException
-import com.vostrikov.pet_twitter.exceptions.user.UserWithNicknameAlreadyExistException
+import com.vostrikov.pet_twitter.exceptions.user.*
 import com.vostrikov.pet_twitter.repository.UserRepository
 import com.vostrikov.pet_twitter.services.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,11 +17,13 @@ import org.springframework.transaction.annotation.Transactional
 class UserServiceImpl implements UserService {
 
     @Autowired
-    UserServiceImpl(UserRepository userRepository) {
+    UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository
+        this.passwordEncoder = passwordEncoder
     }
 
     private UserRepository userRepository
+    PasswordEncoder passwordEncoder
 
     @Override
     User createUser(User user) {
@@ -40,6 +39,7 @@ class UserServiceImpl implements UserService {
         user.setId(UUID.randomUUID().toString())
         user.subscriptions = new HashSet<>()
         user.favoritePosts = new HashSet<>()
+        user.password = passwordEncoder.encode(user.password)
         user.role = "USER"
         User createdUser = userRepository.save(user)
         return createdUser

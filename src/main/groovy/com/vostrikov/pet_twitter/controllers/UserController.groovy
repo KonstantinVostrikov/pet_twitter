@@ -32,6 +32,7 @@ class UserController {
             return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
         } catch (Exception exception) {
             log.error(exception.message)
+            exception.printStackTrace()
             return ResponseEntity.internalServerError().body(new ResponseResult(exception.message))
         }
     }
