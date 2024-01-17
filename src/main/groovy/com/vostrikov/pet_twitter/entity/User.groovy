@@ -12,11 +12,15 @@ class User {
     Set<String> subscriptions
     Set<String> favoritePosts
 
+
     @Override
-    String toString() {
+    public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
+                ", nickName='" + nickName + '\'' +
                 ", firstName='" + firstName + '\'' +
-                '}'
+                ", secondName='" + secondName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

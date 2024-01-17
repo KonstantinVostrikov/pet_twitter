@@ -1,6 +1,7 @@
 package com.vostrikov.pet_twitter.services.impl
 
 import com.vostrikov.pet_twitter.dto.Feed
+import com.vostrikov.pet_twitter.dto.UserDto
 import com.vostrikov.pet_twitter.entity.Post
 import com.vostrikov.pet_twitter.entity.User
 import com.vostrikov.pet_twitter.services.FeedService
@@ -22,11 +23,12 @@ class FeedServiceImplSpec extends Specification {
         def userId = "userId"
         def ownFeed = new Feed(from: userId, to: userId)
         def user = new User(id: userId, email: "test@example.com", nickName: "testUser", subscriptions: ["subscription1", "subscription2"])
+        def userDto = new UserDto(user)
         def posts = [
                 new Post(id: "post1", content: "Content 1", userId: "subscription1", createdAt: LocalDateTime.now()),
                 new Post(id: "post2", content: "Content 2", userId: "subscription2", createdAt: LocalDateTime.now())
         ]
-        userService.findById(userId) >> user
+        userService.findById(userId) >> userDto
         HashSet sub = ["userId", "subscription1", "subscription2"]
         postService.findPostsByUserIds(sub) >> posts
 
@@ -34,7 +36,7 @@ class FeedServiceImplSpec extends Specification {
         def result = feedService.receive(ownFeed)
 
         then:
-        1 * userService.findById(userId) >> user
+        1 * userService.findById(userId) >> userDto
         1 * postService.findPostsByUserIds(sub) >> posts
 
         result == posts
@@ -52,16 +54,16 @@ class FeedServiceImplSpec extends Specification {
                 new Post(id: "post2", content: "Content 2", userId: toUserId, createdAt: LocalDateTime.now())
         ]
 
-        userService.findById(fromUserId) >> fromUser
-        userService.findById(toUserId) >> toUser
+        userService.findById(fromUserId) >> new UserDto(fromUser)
+        userService.findById(toUserId) >> new UserDto(toUser)
         postService.findParticularUserPosts(toUserId) >> posts
 
         when:
         def result = feedService.receive(feed)
 
         then:
-        1 * userService.findById(fromUserId) >> fromUser
-        1 * userService.findById(toUserId) >> toUser
+        1 * userService.findById(fromUserId) >> new UserDto(fromUser)
+        1 * userService.findById(toUserId) >> new UserDto(toUser)
         1 * postService.findParticularUserPosts(toUserId) >> posts
 
         result == posts
@@ -94,7 +96,7 @@ class FeedServiceImplSpec extends Specification {
                 new Post(id: "post2", content: "Content 2", userId: userId, createdAt: LocalDateTime.now())
         ]
         postService.findParticularUserPosts(userId) >> posts
-        userService.findById(userId) >> new User(id: userId)
+        userService.findById(userId) >> new UserDto(new User(id: userId))
 
         when:
         def result = feedService.own(userId)
@@ -123,9 +125,10 @@ class FeedServiceImplSpec extends Specification {
         def userId = "someUserId"
         Set fav = new HashSet([1, 2, 3])
         def user = new User(id: userId, email: "from@example.com", nickName: "fromUser", favoritePosts: fav)
+        def userDto = new UserDto(user)
         def expectedPosts = [new Post(id: 1), new Post(id: 2), new Post(id: 3)]
 
-        userService.findById(_) >> user
+        userService.findById(_) >> userDto
         postService.findPostsByIds(fav) >> expectedPosts
 
 
@@ -133,7 +136,7 @@ class FeedServiceImplSpec extends Specification {
         def result = feedService.favoritesPosts(userId)
 
         then:
-        1 * userService.findById(userId) >> user
+        1 * userService.findById(userId) >> userDto
         1 * postService.findPostsByIds(fav) >> expectedPosts
 
         result == expectedPosts
@@ -143,13 +146,14 @@ class FeedServiceImplSpec extends Specification {
         given:
         def userId = "someUserId"
         def user = new User(id: userId, favoritePosts: [])
-        userService.findById(userId) >> user
+        def userDto = new UserDto(user)
+        userService.findById(userId) >> userDto
 
         when:
         def result = feedService.favoritesPosts(userId)
 
         then:
-        1 * userService.findById(userId) >> user
+        1 * userService.findById(userId) >> userDto
         0 * postService.findPostsByIds(_)
 
         result == []

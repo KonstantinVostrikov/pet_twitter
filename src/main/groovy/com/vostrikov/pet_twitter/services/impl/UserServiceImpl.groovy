@@ -2,6 +2,7 @@ package com.vostrikov.pet_twitter.services.impl
 
 import com.vostrikov.pet_twitter.dto.FavoritePost
 import com.vostrikov.pet_twitter.dto.Subscription
+import com.vostrikov.pet_twitter.dto.UserDto
 import com.vostrikov.pet_twitter.entity.User
 import com.vostrikov.pet_twitter.exceptions.subscription.SubscriptionException
 import com.vostrikov.pet_twitter.exceptions.user.*
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.util.StringUtils
 
 @Service
 @Transactional
@@ -26,7 +28,7 @@ class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder
 
     @Override
-    User createUser(User user) {
+    UserDto createUser(User user) {
 
         if (user.id != null) throw new UserAlreadyExistException()
 
@@ -42,16 +44,16 @@ class UserServiceImpl implements UserService {
         user.password = passwordEncoder.encode(user.password)
         user.role = "USER"
         User createdUser = userRepository.save(user)
-        return createdUser
+        return new UserDto(createdUser)
     }
 
     @Override
-    User findById(String id) {
+    UserDto findById(String id) {
         Optional<User> optional = userRepository.findById(id)
         if (optional.empty) {
             throw new RuntimeException("User doesn't exist")
         }
-        return optional.get()
+        return new UserDto(optional.get())
     }
 
     @Override
@@ -64,7 +66,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    User edit(User user) {
+    UserDto edit(User user) {
         // check user is existing
         User foundUser = null
         userRepository.findById(user.id).ifPresentOrElse(it -> foundUser = it, () -> {
@@ -76,17 +78,20 @@ class UserServiceImpl implements UserService {
             throw new UserEmailCanNotBeChangedException()
         }
 
+        user.password = StringUtils.hasText(user.password) ? passwordEncoder.encode(user.password) : foundUser.password
+        def saved = null
         // nickname not changed
         if (foundUser.nickName.equals(user.nickName)) {
-            return userRepository.save(user)
+            saved = userRepository.save(user)
         }
 
         // check nickname is free
         if (userRepository.findByNickName(user.nickName).isEmpty()) {
-            return userRepository.save(user)
+            saved = userRepository.save(user)
         } else {
             throw new UserWithNicknameAlreadyExistException()
         }
+        new UserDto(saved)
     }
 
     @Override

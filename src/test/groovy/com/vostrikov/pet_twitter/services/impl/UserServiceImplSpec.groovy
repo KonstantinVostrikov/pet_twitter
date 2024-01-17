@@ -11,13 +11,15 @@ import com.vostrikov.pet_twitter.exceptions.user.UserWithEmailAlreadyExistExcept
 import com.vostrikov.pet_twitter.exceptions.user.UserWithNicknameAlreadyExistException
 import com.vostrikov.pet_twitter.repository.UserRepository
 import com.vostrikov.pet_twitter.services.UserService
+import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 
 class UserServiceImplSpec extends Specification {
 
 
     def userRepository = Mock(UserRepository.class)
-    UserService userService = new UserServiceImpl(userRepository)
+    PasswordEncoder passwordEncoder = Mock(PasswordEncoder.class)
+    UserService userService = new UserServiceImpl(userRepository, passwordEncoder)
 
     //create
     def "createUser should save a new user"() {
@@ -91,7 +93,9 @@ class UserServiceImplSpec extends Specification {
         then:
         1 * userRepository.findById(userId) >> Optional.of(existingUser)
 
-        foundUser == existingUser
+        foundUser.id == existingUser.id
+        foundUser.email == existingUser.email
+        foundUser.nickName == existingUser.nickName
     }
 
     def "findById should throw RuntimeException if the user doesn't exist"() {
